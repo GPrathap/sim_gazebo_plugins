@@ -23,7 +23,6 @@
 #include <octomap_msgs/conversions.h>
 #include <gazebo/common/Time.hh>
 #include <gazebo/common/CommonTypes.hh>
-// #include <gazebo/math/Vector3.hh>
 #include <ignition/math/Vector3.hh>
 #include <string.h>
 #include <stdlib.h>
@@ -104,7 +103,11 @@ bool OctomapFromGazeboWorld::ServiceCallback(
       pcl.push_back(it.getCoordinate());
     }
   }
-  string outputFilename = req.filename + ".pcl";
+  std::string ex = req.filename;
+  std::string toReplace(".bt");
+  size_t pos = ex.find(toReplace);
+  ex.replace(pos, toReplace.length(), "");
+  string outputFilename = ex + ".pcd";
   ofstream f(outputFilename.c_str(), ofstream::out);
   f << "# .PCD v0.7" << endl
     << "VERSION 0.7" << endl
